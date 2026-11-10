@@ -23,6 +23,9 @@ Dependency/consumer mapping only. Do not edit code or conduct an entire risk/dif
 - For applicable behavioral changes, note whether a focused RED pre-change failure, GREEN post-change pass, and REFACTOR regression recheck are available; missing evidence is a coverage gap, not an invented code defect. Do not require test-first for untestable/cosmetic/performance-only tasks; performance may use baseline and comparable measurements. Examine only genuinely affected behavior and avoid assuming test tooling or framework.
 - Never create tests in the protected original project during this read-only assignment. Safe isolated scratch checks are allowed only within the stated read-only boundary. Preserve subagent reporting and STOP rules.
 
+## Existing observable feature contracts
+If an authorized spec includes a **Feature Walkthrough**, treat its externally observable entry points, inputs, outcomes, and failure/state transitions as contract evidence for impact mapping. Do not write, demand, or redesign walkthrough/spec files during this read-only skill; map actual consumers and code paths only.
+
 ## Procedure
 1. Identify the actual symbol, behavior, interface, schema, event, configuration, or output artifact and the proposed change.
 2. Trace direct references with appropriate language tooling or targeted text search. Avoid a full-repository scan without a reason.

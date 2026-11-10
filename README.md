@@ -1,6 +1,6 @@
-# ns-skills-mumet v12
+# ns-skills-mumet v13
 
-Five technology-agnostic coding skills for adaptive specs/plans, root-cause debugging, change impact, read-only reviews, and proportionate regression protection. V12 adds adaptive Future Failure & Latent Defect Analysis across existing skills; V11 added adaptive RED–GREEN–REFACTOR for testable behavior and a safe CLI upgrade guide. V10 project-fidelity, Ponytail-inspired minimal complete changes, and all previous parent/subagent, read-only, planning, and regression protections remain.
+Five technology-agnostic coding skills for adaptive specs/plans, root-cause debugging, change impact, read-only reviews, and proportionate regression protection. **V13 adds Adaptive Feature Walkthrough** to describe exactly what a feature will look like and do before implementation. V12 introduced Future Failure & Latent Defect Analysis; V11 introduced adaptive RED–GREEN–REFACTOR and CLI upgrade guidance; V10 introduced project-fidelity and minimal-complete-change rules. All prior parent/subagent, read-only and regression protections remain.
 
 **`ns-skills-mumet` is the package name, not a sixth skill.** Each `ns-*` folder is discoverable independently.
 
@@ -17,7 +17,7 @@ ns-skills-mumet/
   AGENTS.md                  # Detailed global instructions (choose one global source)
   RULES.md                   # Compact alternative global instructions
   skills/
-    ns-new-feature/SKILL.md # New/changed behavior, spec, plan, implementation
+    ns-new-feature/SKILL.md # New/changed behavior, spec with walkthrough, plan, implementation
     ns-fix-bug/SKILL.md     # Debug root cause, minimal fix, regression checks
     ns-impact-map/SKILL.md  # Read-only dependency/consumer map
     ns-risk-review/SKILL.md # Read-only risk analysis
@@ -25,7 +25,9 @@ ns-skills-mumet/
   tests/test_contracts.py     # Maintainer-only baseline instruction contract checks
   tests/test_adaptive_fidelity.py # Language/framework-neutral fidelity policy contracts
   tests/test_adaptive_tdd.py   # RED-GREEN-REFACTOR policy/upgrade contracts
+  tests/test_future_failure.py # V12 latent-failure policy contracts
   tests/test_isolation_demo.py # Local disposable-workspace demos
+  tests/test_feature_walkthrough.py # V13 policy contract scenarios
   TEST_REPORT.md              # Reproducible scenario test summary (not agent-runtime proof)
 ```
 
@@ -63,6 +65,38 @@ For combined requests such as **feature + bug + review**, assign distinct phases
 Risk comes from actual consequences, not module names. CRITICAL does not itself authorize action or demand a user question. A bug fix needs a full feature spec only if the intended contract changes or is materially unclear. A **diagnosis-only bug request never authorizes editing application code/config/tests**. No blanket mandatory TDD for every task, full suite, worktrees, per-step commits, extra agents, or lengthy docs for trivial changes.
 
 Regression assessment applies to code, dependencies, runtime config, schemas, build/CI and generated output when they can change behavior or delivery. Pure prose documentation requires appropriate lightweight document checks, not artificial runtime tests.
+
+### Adaptive Feature Walkthrough (V13)
+
+**Problem addressed:** a spec and implementation plan can be technically correct yet fail to show what people (or API/CLI/background consumers) will actually experience. `ns-new-feature` now includes an **expected post-implementation walkthrough** inside the **SPEC (what happens)**, before **PLAN (how and how to check)**. It is not a new sixth skill or a mandatory third document.
+
+**Normal feature flow:** discover existing project conventions -> clarify requirements -> **spec + Feature Walkthrough** -> testable acceptance criteria -> plan tasks/checks -> authorized implementation -> verify actual success/failure flows against the spec and affected existing behavior.
+
+Example: "Add User" feature (illustrative; not requirements to inject into every project):
+
+```markdown
+# spec.md — Add User
+## Feature Walkthrough
+After implementation, an authorized administrator sees a Users menu and an Add User button.
+1. The administrator opens Users and selects Add User; the app shows the agreed username and password inputs.
+2. On Save, the server validates required values, a duplicate username, password policy, and permission according to the agreed project contract.
+3. Success: the user record is saved with password stored appropriately, confirmation appears, and the new account is visible in the list.
+4. Failure: duplicate username or weak password produces a clear field-level error; no partial account is stored. Authorization failure denies access without changing data.
+
+## Acceptance criteria
+- AC-01: authorized users can open the add-user entry point.
+- AC-02: duplicates and weak passwords are rejected without saving.
+- AC-03: valid submission creates a user and displays confirmation.
+
+# plan.md — references spec.md, does NOT repeat the walkthrough
+- Implement authorized entry point and form; verify AC-01.
+- Add appropriate validation/storage using the project's existing conventions; verify AC-02 and AC-03.
+- Run relevant existing authorization/user-management regression checks.
+```
+
+All names, fields and rules above are **examples**, not assumed requirements. Real agents must inspect the actual project and approved decisions; do not invent UI, permissions or extra features. For API, CLI, library or background jobs, the walkthrough uses trigger/input, observable output or status, state changes, and relevant failure/retry behavior **without adding a fake screen**. `LIGHT` changes require no mandatory flow ceremony; `STANDARD` and `CRITICAL` features with meaningful observable behavior get a concise walkthrough. Wireframes/mockups are optional, never required. `spec.md` is the default home; an optional linked `feature-flow.md` is justified only for complex branching or an explicit request. **Plan-only requests do not force a new spec**; existing walkthroughs are reused when available. Bug fixes with unchanged contracts do not require new flow documents.
+
+The walkthrough is a **behavior contract**: each significant path maps to an acceptance criterion, the plan maps criteria to implementation/tests, and review checks observable implementation versus the approved spec. It does not prove correctness without executable/manual verification.
 
 ### Adaptive project fidelity & efficiency (V10 retained)
 
@@ -110,11 +144,11 @@ Install the **compact `RULES.md` as your one global guidance source** if support
 
 Install `ns-*/SKILL.md` directories in that agent's documented skills root. For runtimes that load `AGENTS.md`, configure the **detailed `AGENTS.md` as the one global source**; do not also inject `RULES.md`. Do not assume either filename is auto-discovered from this bundle. These Markdown rules guide behavior but **do not enforce a technical sandbox or tool permissions**.
 
-### Updating an existing CLI installation (V10/V11 → V12)
+### Updating an existing CLI installation (V10/V11/V12 → V13)
 
 **Yes, existing installations can be updated.** Determine your **actual installed skills directory** from your CLI agent's documentation/settings first; it may be user-global, workspace-local, or managed by a plugin/skill installer. If managed by a plugin/installer, use that tool's official update mechanism instead of copying into a generated cache. Do not guess paths or modify unrelated skills.
 
-For a **manual** installation, back up the five existing `ns-*` skill folders and any customized global guidance. After extracting V12, replace only the five skill directories in the correct skills root. For example, **only if** your OMP installation really uses `~/.omp/agent/skills`:
+For a **manual** installation, back up the five existing `ns-*` skill folders and any customized global guidance. After extracting V13, replace only the five skill directories in the correct skills root. For example, **only if** your OMP installation really uses `~/.omp/agent/skills`:
 
 ```bash
 # Run in the directory containing the extracted ns-skills-mumet/ folder.
@@ -134,7 +168,7 @@ for name in ns-new-feature ns-fix-bug ns-impact-map ns-risk-review ns-review-dif
 done
 ```
 
-If you use **global guidance**, merge the V12 changes into whichever single source your agent loads (`RULES.md` **or** `AGENTS.md`); do not overwrite project-specific/user edits, or inject both sources at once. The exact runtime guidance location varies. After updating, **restart or reload** the CLI session, check skill discovery, and run a harmless small behavior test to verify the V12 rules is actually loaded. Existing projects and their code do not need migration. To roll back a manual update, restore the backed-up skill folders and original global guidance.
+If you use **global guidance**, merge the V13 changes into whichever single source your agent loads (`RULES.md` **or** `AGENTS.md`); do not overwrite project-specific/user edits, or inject both sources at once. The exact runtime guidance location varies. After updating, **restart or reload** the CLI session, check skill discovery, and run a harmless small behavior test to verify the V13 rules are actually loaded. Existing projects and their code do not need migration. To roll back a manual update, restore the backed-up skill folders and original global guidance.
 
 ## Behavioral acceptance scenarios
 
@@ -157,6 +191,11 @@ If you use **global guidance**, merge the V12 changes into whichever single sour
 17. **Read-only review:** examine TDD evidence or run only isolated scratch checks; never create tests inside the original project.
 18. **Performance-only improvement:** use before/after measurements and correctness checks; do not require an intentionally failing benchmark.
 19. **Existing CLI install:** back up skill folders, update the five skill files without overwriting unrelated project files, merge rather than replace global guidance, then restart/reload.
+20. **STANDARD Add User feature:** spec describes actual menu/form, validation, success and failures before plan; acceptance criteria map to implementation/tests.
+21. **Headless service:** API/CLI/background feature describes observable triggers/results/failure without invented UI or required wireframe.
+22. **Plan-only scope:** reuse an existing walkthrough if available, but never force creation of a new spec/document.
+23. **Trivial/baseline bug:** no compulsory walkthrough ceremony; existing spec can serve as behavioral baseline.
+24. **Review of a feature:** compare implementation and tests with provided walkthrough; report missing checks separately from demonstrated defects.
 
 Passing Markdown/frontmatter validation cannot prove actual agent compliance or zero regressions; trial with your agent runtime is still necessary.
 
@@ -172,4 +211,4 @@ Run from the extracted package root:
 PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests -p 'test_*.py' -v
 ```
 
-The suite checks 40 baseline policy scenarios, additional adaptive-fidelity and RED–GREEN–REFACTOR scenarios, and 4 local sandbox demonstrations against the **actual Markdown instructions**, including role constraints, STOP behavior, diagnosis-only work, isolated read-only tests, overlapping writes, STANDARD plans, regression evidence, and release readiness. It is a **static policy-contract test**, **not** an LLM/runtime behavior test. Check `TEST_REPORT.md` for what was and was not verified. For runtime proof, configure Pi/OMP and test actual delegated agents under isolated test tasks.
+The suite checks 40 baseline policy scenarios, additional adaptive-fidelity, RED–GREEN–REFACTOR and Feature Walkthrough scenarios, and 4 local sandbox demonstrations against the **actual Markdown instructions**, including role constraints, STOP behavior, diagnosis-only work, isolated read-only tests, overlapping writes, STANDARD plans, regression evidence, and release readiness. It is a **static policy-contract test**, **not** an LLM/runtime behavior test. Check `TEST_REPORT.md` for what was and was not verified. For runtime proof, configure Pi/OMP and test actual delegated agents under isolated test tasks.

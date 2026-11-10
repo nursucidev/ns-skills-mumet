@@ -1,3 +1,33 @@
+# ns-skills-mumet v13 — Test Report
+
+**Date:** 2026-11-10  
+**Package:** v13 (Adaptive Feature Walkthrough).  
+**Method:** Python standard-library static instruction contract tests + local disposable-sandbox demonstrations. **These tests do not prove live AI-agent compliance, real CLI installation correctness, or application runtime behavior.**
+
+## V13 change coverage
+
+- The `ns-new-feature` workflow places a concise outcome-oriented **Feature Walkthrough** in the spec before the plan, scoped to meaningful `STANDARD`/`CRITICAL` behavior, with a `LIGHT` exemption.
+- The flow covers actor/entry point, action/input, validation, response, success/failure and state; API, CLI, UI and background jobs work without invented GUI.
+- Spec is authoritative; optional separate `feature-flow.md` only for complex cases; plan refers rather than duplicates and maps walkthrough -> acceptance criteria -> implementation/tasks/tests.
+- Plan-only scope is preserved; existing bug-fix workflow is not forced to create new feature specs. Review/impact/risk skills use an existing walkthrough as contract evidence without making it compulsory.
+- `AGENTS.md`, `RULES.md`, `README.md` synchronized to v13; previous fidelity, RED–GREEN–REFACTOR, latent-defect, STOP and read-only rules remain.
+
+## Observed V13 checks
+
+- **RED:** the 16 new V13 policy-contract tests were run against an extracted, unchanged v12 archive in a disposable directory. Result: **16 failures / 16 tests**, the expected absence of the new behavior. No error or live agent test.
+- **GREEN:** **99/99 tests PASS** (`PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests -p 'test_*.py' -q`; observed `Ran 99 tests ... OK`). This covers the preserved v12 policies, 16 new v13 scenarios, and 4 local disposable-sandbox demonstrations.
+- **Negative tests:** in 4 disposable copies, removed the feature heading, removed the compact global rule, weakened the plan-only restriction, or removed the review cross-check. The V13 test suite failed for **each of the 4 mutations** (1 failure per isolated run). This does not substitute for a live-agent evaluation.
+
+Run from the unzipped `ns-skills-mumet` root:
+
+```sh
+PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests -p 'test_*.py' -q
+```
+
+**Outstanding verification:** an actual Pi/OMP install/update, real subagent delegation, and independent agent acceptance runs are **NOT RUN** in this package test. Markdown rules cannot technically enforce a runtime sandbox.
+
+## Historical V12 report (retained for traceability)
+
 # ns-skills-mumet v12 — Test Report
 
 **Date:** 2026-11-10  
