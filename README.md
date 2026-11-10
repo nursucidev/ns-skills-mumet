@@ -1,6 +1,6 @@
-# ns-skills-mumet v11
+# ns-skills-mumet v12
 
-Five technology-agnostic coding skills for adaptive specs/plans, root-cause debugging, change impact, read-only reviews, and proportionate regression protection. V11 adds adaptive RED–GREEN–REFACTOR for testable behavior and a safe CLI upgrade guide. V10 project-fidelity, Ponytail-inspired minimal complete changes, and all previous parent/subagent, read-only, planning, and regression protections remain.
+Five technology-agnostic coding skills for adaptive specs/plans, root-cause debugging, change impact, read-only reviews, and proportionate regression protection. V12 adds adaptive Future Failure & Latent Defect Analysis across existing skills; V11 added adaptive RED–GREEN–REFACTOR for testable behavior and a safe CLI upgrade guide. V10 project-fidelity, Ponytail-inspired minimal complete changes, and all previous parent/subagent, read-only, planning, and regression protections remain.
 
 **`ns-skills-mumet` is the package name, not a sixth skill.** Each `ns-*` folder is discoverable independently.
 
@@ -105,11 +105,11 @@ Install the **compact `RULES.md` as your one global guidance source** if support
 
 Install `ns-*/SKILL.md` directories in that agent's documented skills root. For runtimes that load `AGENTS.md`, configure the **detailed `AGENTS.md` as the one global source**; do not also inject `RULES.md`. Do not assume either filename is auto-discovered from this bundle. These Markdown rules guide behavior but **do not enforce a technical sandbox or tool permissions**.
 
-### Updating an existing CLI installation (V10 → V11)
+### Updating an existing CLI installation (V10/V11 → V12)
 
 **Yes, existing installations can be updated.** Determine your **actual installed skills directory** from your CLI agent's documentation/settings first; it may be user-global, workspace-local, or managed by a plugin/skill installer. If managed by a plugin/installer, use that tool's official update mechanism instead of copying into a generated cache. Do not guess paths or modify unrelated skills.
 
-For a **manual** installation, back up the five existing `ns-*` skill folders and any customized global guidance. After extracting V11, replace only the five skill directories in the correct skills root. For example, **only if** your OMP installation really uses `~/.omp/agent/skills`:
+For a **manual** installation, back up the five existing `ns-*` skill folders and any customized global guidance. After extracting V12, replace only the five skill directories in the correct skills root. For example, **only if** your OMP installation really uses `~/.omp/agent/skills`:
 
 ```bash
 # Run in the directory containing the extracted ns-skills-mumet/ folder.
@@ -129,7 +129,7 @@ for name in ns-new-feature ns-fix-bug ns-impact-map ns-risk-review ns-review-dif
 done
 ```
 
-If you use **global guidance**, merge the V11 changes into whichever single source your agent loads (`RULES.md` **or** `AGENTS.md`); do not overwrite project-specific/user edits, or inject both sources at once. The exact runtime guidance location varies. After updating, **restart or reload** the CLI session, check skill discovery, and run a harmless small behavior test to verify the V11 rule is actually loaded. Existing projects and their code do not need migration. To roll back a manual update, restore the backed-up skill folders and original global guidance.
+If you use **global guidance**, merge the V12 changes into whichever single source your agent loads (`RULES.md` **or** `AGENTS.md`); do not overwrite project-specific/user edits, or inject both sources at once. The exact runtime guidance location varies. After updating, **restart or reload** the CLI session, check skill discovery, and run a harmless small behavior test to verify the V12 rules is actually loaded. Existing projects and their code do not need migration. To roll back a manual update, restore the backed-up skill folders and original global guidance.
 
 ## Behavioral acceptance scenarios
 

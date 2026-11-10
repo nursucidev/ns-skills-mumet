@@ -1,4 +1,12 @@
-# ns-skills-mumet v11 — Test Report
+# ns-skills-mumet v12 — Test Report
+
+**Date:** 2026-11-10  
+**Package verified:** v12, after documentation version synchronization.  
+**Result:** 83/83 tests PASS (`python3 -m unittest discover -s tests -p 'test_*.py' -q`).  
+**Scope:** written-policy contracts and isolated local tests only; live-agent compliance and actual CLI installation/update were NOT tested.  
+**Changes in this documentation update:** synchronized `RULES.md` header and README upgrade instructions with v12; preserved historical v11 test details below. No skill behavior or policy logic changed.  
+
+## Historical v11 test record (retained for traceability)
 
 **Date:** 2026-11-09  
 **Scope:** static policy contracts + isolated local sandbox demonstrations, not live-agent compliance.  
